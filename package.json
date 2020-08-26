@@ -2,6 +2,12 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -10,16 +16,32 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/react-loadable": "^5.5.3",
+    "antd-mobile": "^2.3.3",
+    "eslint-plugin-prettier": "^3.1.4",
+    "normalize.css": "^8.0.1",
+    "rc-animate": "^3.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-lazyload": "^3.0.0",
+    "react-loadable": "^5.5.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "typescript": "~3.7.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@hot-loader/react-dom": "^16.13.0+4.12.20",
+    "babel-plugin-import": "^1.13.0",
+    "customize-cra": "^1.0.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.0",
+    "postcss-pxtorem": "^5.1.1",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "react-app-rewire-hot-loader": "^2.0.1",
+    "react-app-rewired": "^2.1.6",
+    "react-hot-loader": "^4.12.21",
+    "prettier": "^2.1.0"
   },
   "eslintConfig": {
     "extends": "react-app"

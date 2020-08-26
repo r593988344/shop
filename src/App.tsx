@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import Loadable from 'react-loadable';
+import Home from './pages/home';
+import { hot } from 'react-hot-loader/root';
 
-function App() {
+// 加载页面
+import ActivityIndicator from './components/LoadingPage';
+import AppliedRoute from './AppliedRoute';
+import NotFound from './components/NotFound';
+import './App.less';
+
+// 禁用右键菜单
+window.oncontextmenu = function () {
+  return false;
+};
+
+// loadable 异步加载组件
+// 列表页
+const LoadableList: React.ReactNode = Loadable({
+  loader: () => import('./pages/home'),
+  loading: ActivityIndicator,
+});
+
+const App = (props: any) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <AppliedRoute props={props} exact path="/home" component={LoadableList} />
+      <Route component={NotFound} />
+    </Switch>
   );
-}
+};
 
-export default App;
+const AppHot = process.env.NODE_ENV === 'development' ? hot(withRouter(App)) : withRouter(App);
+export default AppHot;
