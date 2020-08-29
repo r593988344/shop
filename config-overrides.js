@@ -6,8 +6,10 @@ const {
   addPostcssPlugins,
   fixBabelImports,
   addWebpackPlugin,
+  adjustStyleLoaders,
 } = require('customize-cra');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 const rewireReactHotLoader = require('react-app-rewire-hot-loader');
 const path = require('path');
 // 本地调试端口
@@ -82,12 +84,22 @@ const devServerConfig = () => (config) => {
 };
 
 module.exports = {
+  // 使用 babel-import 按需加载
   webpack: override(
     fixBabelImports('import', {
       libraryName: 'antd-mobile',
       style: 'css',
     }),
-    addLessLoader(),
+    addLessLoader(
+      {},
+      {
+        // strictMath: true,
+        noIeCompat: true,
+        javascriptEnabled: true,
+        modifyVars: {},
+        // localIdentName: '[local]--[hash:base64:5]', // 自定义 CSS Modules 的 localIdentName
+      },
+    ),
     addPostcssPlugins([
       require('postcss-pxtorem')({
         rootValue: 16,
@@ -96,10 +108,22 @@ module.exports = {
         selectorBlackList: ['am-'],
       }),
     ]),
+    adjustStyleLoaders(({ use: [, css, postcss, resolve] }) => {
+      css.options.sourceMap = false; // css-loader
+      postcss.options.sourceMap = false; // postcss-loader
+      // when enable pre-processor,
+      // resolve-url-loader will be enabled too
+      if (resolve) {
+        resolve.options.sourceMap = false; // resolve-url-loader
+      }
+    }),
+    // add an alias for "ag-grid-react" imports
     addWebpackAlias({
       ['@']: path.resolve(__dirname, './src'),
-      'react-dom': '@hot-loader/react-dom',
+      ['components']: path.resolve(__dirname, './src/components'),
+      ['react-dom']: '@hot-loader/react-dom',
     }),
+    // 将 tsconfig.json 中的路径配置映射到 webpack 中
     addCustomize(),
     // 热跟新
     hotLoader(),

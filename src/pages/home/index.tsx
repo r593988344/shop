@@ -1,8 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'dva';
+import { Dispatch, AnyAction } from 'redux';
 import { TabBar } from 'antd-mobile';
 
-const Home = () => {
-  const [selectedTab, setSelectedTab] = useState<String>('blueTab');
+export interface HomeProps {
+  dispatch: Dispatch<AnyAction>;
+}
+
+const Home: React.ForwardRefRenderFunction<unknown, HomeProps> = (props) => {
+  const { dispatch } = props;
+  const [selectedTab, setSelectedTab] = useState<string>('blueTab');
+
+  const fetchData = useCallback(async () => {
+    await dispatch({
+      type: 'home/getPageList',
+      payload: {
+        name: 'sdsd',
+      },
+    });
+    console.log('sss');
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <div style={{ position: 'fixed', height: '100%', width: '100%', top: 0 }}>
       <TabBar unselectedTintColor="#949494" tintColor="#33A3F4" barTintColor="white">
@@ -118,4 +140,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default connect()(Home);

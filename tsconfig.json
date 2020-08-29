@@ -6,10 +6,12 @@
       "dom.iterable",
       "esnext"
     ],
+    "declaration": false,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
@@ -21,5 +23,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.extend.json"
 }
