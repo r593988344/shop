@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
+import { Router, Route, Switch, RouteComponentProps } from 'dva/router';
 import dynamic from 'dva/dynamic';
 import NotFound from 'components/NotFound';
 export interface RouteConfigDeclaration {
@@ -14,7 +14,7 @@ export interface RouteConfigDeclaration {
   /**
    * dva models
    */
-  models?: any;
+  models?: () => PromiseLike<any>[];
   /**
    * 是否严格匹配路由
    */
@@ -38,11 +38,11 @@ export interface RouteConfigDeclaration {
   /**
    * 路由组件
    */
-  component: any;
+  component: () => PromiseLike<any>;
   /**
    * 子路由
    */
-  routes?: Array<RouteConfigDeclaration>;
+  routes?: RouteConfigDeclaration[];
 }
 
 /** 动态路由配置
@@ -72,7 +72,9 @@ function RouterConfig(props: any) {
             models,
             component,
           };
-          const Page: any = dynamic(resolve);
+          const Page = (dynamic(resolve) as unknown) as
+            | React.ComponentType<RouteComponentProps<any>>
+            | React.ComponentType<any>;
           return <Route key={index} path={path} exact component={Page} />;
         })}
         <Route component={NotFound} />

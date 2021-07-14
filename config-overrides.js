@@ -119,9 +119,9 @@ module.exports = {
     }),
     // add an alias for "ag-grid-react" imports
     addWebpackAlias({
-      ['@']: path.resolve(__dirname, './src'),
-      ['components']: path.resolve(__dirname, './src/components'),
-      ['react-dom']: '@hot-loader/react-dom',
+      '@': path.resolve(__dirname, './src'),
+      components: path.resolve(__dirname, './src/components'),
+      'react-dom': '@hot-loader/react-dom',
     }),
     // 将 tsconfig.json 中的路径配置映射到 webpack 中
     addCustomize(),
